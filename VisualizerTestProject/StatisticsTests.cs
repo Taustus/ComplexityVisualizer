@@ -30,7 +30,7 @@ namespace VisualizerTestProject
                                  throw new InvalidOperationException("Couldn't find IStatisticsService!");
 
             _statisticsSettings = serviceProvider.GetService<IOptions<StatisticsSettings>>() ??
-                                  throw new InvalidOperationException("Couldn't find IStatisticsService!");
+                                  throw new InvalidOperationException("Couldn't find IStatisticsSettings!");
 
         }
 
