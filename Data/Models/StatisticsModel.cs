@@ -1,0 +1,22 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Data
+{
+    public class StatisticsModel
+    {
+        public long Ticks { get; protected set; }
+
+        [StringLength(3)]
+        public string Method { get; protected set; }
+
+        [StringLength(11)]
+        public string EnumerableType { get; protected set; }
+
+        public StatisticsModel(long Ticks, string Method, string EnumerableType)
+        {
+            this.Ticks = Ticks;
+            this.Method = Method;
+            this.EnumerableType = EnumerableType;
+        }
+    }
+}

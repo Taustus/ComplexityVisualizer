@@ -3,16 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.31903.286
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logic", "Logic\Logic.csproj", "{4153E09F-C8FE-4ACB-A60C-4320E1A49DDA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logic", "Logic\Logic.csproj", "{4153E09F-C8FE-4ACB-A60C-4320E1A49DDA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{7C4C3A33-1339-471B-8091-8FEC4B8BE678}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", "{7C4C3A33-1339-471B-8091-8FEC4B8BE678}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7694F375-5562-4C6A-B259-E1FFE0768F4D}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		Snippet.snippet = Snippet.snippet
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComplexityVisualizer", "ComplexityVisualizer\ComplexityVisualizer.csproj", "{A3AF7492-C2C7-4CC4-85E8-AC904063F9B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComplexityVisualizer", "ComplexityVisualizer\ComplexityVisualizer.csproj", "{A3AF7492-C2C7-4CC4-85E8-AC904063F9B8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualizerAPI", "VisualizerAPI\VisualizerAPI.csproj", "{66B5BF80-5738-4946-8CCF-A6A2DA83F684}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,6 +35,10 @@ Global
 		{A3AF7492-C2C7-4CC4-85E8-AC904063F9B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3AF7492-C2C7-4CC4-85E8-AC904063F9B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3AF7492-C2C7-4CC4-85E8-AC904063F9B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66B5BF80-5738-4946-8CCF-A6A2DA83F684}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66B5BF80-5738-4946-8CCF-A6A2DA83F684}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66B5BF80-5738-4946-8CCF-A6A2DA83F684}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66B5BF80-5738-4946-8CCF-A6A2DA83F684}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

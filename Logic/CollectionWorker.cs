@@ -1,34 +1,23 @@
-﻿using Data;
+﻿using Data.Enums;
 
 namespace Logic
 {
-    public enum CollectionSize
-    {
-        Tiny = 1000,
-        Small = 10000,
-        Medium = 100000,
-        Large = 1000000,
-        Huge = 10000000
-    }
-
-    public enum EnumerableType
-    {
-        List,
-        IEnumerable,
-        Array,
-        HashSet,
-    }
+    
 
     public class CollectionWorker<T>
     {
         public IEnumerable<T> Collection { get; protected set; }
+
+        public EnumerableType EnumerableType { get; protected set; }
 
         public Random Randomizer { get; protected set; }
 
         public CollectionWorker(EnumerableType EnumerableType, CollectionSize CollectionSize)
         {
             Randomizer = new Random();
-            Collection = GenerateCollection(EnumerableType, CollectionSize);
+            this.EnumerableType = EnumerableType;
+
+            Collection = GenerateCollection(CollectionSize);
         }
 
         public T Max()
@@ -61,10 +50,10 @@ namespace Logic
 
         public bool Any() => Collection.Any();
 
-        private IEnumerable<T> GenerateCollection(EnumerableType enumerableType, CollectionSize collectionSize)
+        private IEnumerable<T> GenerateCollection(CollectionSize collectionSize)
         {
             var size = (int)collectionSize;
-            IEnumerable<T> collection = enumerableType switch
+            IEnumerable<T> collection = EnumerableType switch
             {
                 EnumerableType.List => new List<T>(),
                 EnumerableType.IEnumerable => Enumerable.Empty<T>(),
@@ -98,7 +87,7 @@ namespace Logic
             {
                 const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
                 randomNumber = Randomizer.Next(0, chars.Length);
-                value = chars[(int)randomNumber].ToString();
+                value = chars[(int)randomNumber];
             }
             else if (typeof(T) == typeof(int))
             {
