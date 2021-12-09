@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+    <CodeSnippet Format="1.0.0">
+		<Header>
+			<Title>Define a DependencyProperty</Title>
+			<Shortcut>propp</Shortcut>
+			<Description>Protected property</Description>
+			<Author>Sergey Babikov</Author>
+			<SnippetTypes>
+				<SnippetType>Expansion</SnippetType>
+			</SnippetTypes>
+		</Header>
+        <Snippet>
+			<Declarations>
+				<Literal>
+					<ID>type</ID>
+					<ToolTip>Property Type</ToolTip>
+					<Default>int</Default>
+				</Literal>
+				<Literal>
+					<ID>property</ID>
+					<ToolTip>Property Name</ToolTip>
+					<Default>MyProperty</Default>
+				</Literal>
+			</Declarations>
+            <Code Language="CSHARP">
+                <![CDATA[public $type$ $property$ { get; protected set; }]]>
+            </Code>
+        </Snippet>
+    </CodeSnippet>
+</CodeSnippets>
