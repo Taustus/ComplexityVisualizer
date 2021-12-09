@@ -1,6 +1,7 @@
 using Data;
 using Data.Contracts;
 using Logic;
+using Logic.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,10 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 var configuration = builder.Configuration;
 var services = builder.Services;
-services.AddDbContext<MySqlContext>(options => options.UseMySQL(configuration.GetSection("ConnectionsString")["MySQL"]));
-services.Configure<StatisticsSettings>(configuration.GetSection("StatisticsSettings"));
-services.AddScoped<IStatisticsRepository, StatisticsRepository>();
-services.AddSingleton<StatisticsService>();
+services.ConfigureStatisticsLogic(configuration);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -25,8 +25,9 @@ namespace Data.Enums
 
     public enum ProcessTime
     {
-        Short = 1,
-        Long = 12,
+        Tiny = 1000,
+        Short = 3600000,
+        Long = 36000000,
         Infinite = int.MaxValue,
     }
 }

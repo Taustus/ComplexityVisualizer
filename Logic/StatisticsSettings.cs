@@ -9,5 +9,7 @@ namespace Logic
         public CollectionSize CollectionSize { get; set; }
 
         public int DelayInMilliseconds { get; set; }
+
+        public bool DebugMode { get; set; }
     }
 }

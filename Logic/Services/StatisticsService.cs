@@ -3,6 +3,7 @@ using Data.Enums;
 using Logic.Contracts;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using System.Diagnostics;
 
 namespace Logic
@@ -13,7 +14,9 @@ namespace Logic
 
         protected readonly ProcessTime _processTime;
         protected readonly CollectionSize _collectionSize;
+        protected readonly TimeSpan _timeToWorkInMilliseconds;
         protected readonly int _delayInMiliseconds;
+        protected readonly bool _debugMode;
 
         public StatisticsService(IServiceScopeFactory ServiceScopeFactory,
                                  IOptions<StatisticsSettings> StatisticsSettings)
@@ -21,6 +24,9 @@ namespace Logic
             _serviceScopeFactory = ServiceScopeFactory;
             _processTime = StatisticsSettings.Value.ProcessTime;
             _collectionSize = StatisticsSettings.Value.CollectionSize;
+            _debugMode = StatisticsSettings.Value.DebugMode;
+            _delayInMiliseconds = StatisticsSettings.Value.DelayInMilliseconds;
+            _timeToWorkInMilliseconds = TimeSpan.FromMilliseconds((long)_processTime);
 
             SetUpTasks();
         }
@@ -29,44 +35,47 @@ namespace Logic
         {
             Task[] tasks = GenerateTasks();
 
-            Task.WaitAny(tasks);
+            foreach (var task in tasks)
+            {
+                task.Start();
+            }
         }
 
         private Task[] GenerateTasks()
         {
-            var timeToWork = TimeSpan.FromHours((int)_processTime);
-
             Task[] tasks = new[]
             {
-                CreateNewStatisticsTask(timeToWork, EnumerableType.IEnumerable),
-                CreateNewStatisticsTask(timeToWork, EnumerableType.List),
-                CreateNewStatisticsTask(timeToWork, EnumerableType.Array),
-                CreateNewStatisticsTask(timeToWork, EnumerableType.HashSet)
+                CreateNewStatisticsTask(EnumerableType.IEnumerable),
+                CreateNewStatisticsTask(EnumerableType.List),
+                CreateNewStatisticsTask(EnumerableType.Array),
+                CreateNewStatisticsTask(EnumerableType.HashSet)
             };
 
             return tasks;
         }
 
-        private Task CreateNewStatisticsTask(TimeSpan timeToWork, EnumerableType enumerableType)
+        private Task CreateNewStatisticsTask(EnumerableType enumerableType)
         {
             CollectionWorker<int> collectionWorker = new(enumerableType, _collectionSize);
 
-            Task collectionWorkerTask = CollectionWorkerTask(collectionWorker, timeToWork);
+            Task collectionWorkerTask = new(() => CollectionWorkerTask(collectionWorker));
 
             return collectionWorkerTask;
         }
 
-        private async Task CollectionWorkerTask<T>(CollectionWorker<T> collectionWorker, TimeSpan timeToWork)
+        private async void CollectionWorkerTask<T>(CollectionWorker<T> collectionWorker)
         {
             List<StatisticsModel> min = new();
             List<StatisticsModel> max = new();
             List<StatisticsModel> any = new();
 
             Stopwatch stopWatch = new();
-            var timeAsTicks = timeToWork.Ticks;
+            var timeAsTicks = _timeToWorkInMilliseconds.Ticks;
 
             long passedTicks = 0;
+            int fileCounter = 0;
             int delay = _delayInMiliseconds;
+            var debugMode = _debugMode;
             var enumerableType = collectionWorker.EnumerableType;
 
             while (passedTicks < timeAsTicks)
@@ -83,7 +92,26 @@ namespace Logic
                 // Counts between them are equal
                 if (min.Count > 100)
                 {
-                    AddDataToDb(min, max, any);
+                    if(!debugMode)
+                    {
+                        AddDataToDb(min, max, any);
+                    }
+                    else
+                    {
+                        var serialized = JsonConvert.SerializeObject(min);
+
+                        if($"../{enumerableType}" is var folderPath && !Directory.Exists(folderPath))
+                        {
+                            Directory.CreateDirectory(folderPath);
+                        }
+
+                        await File.AppendAllTextAsync($"../{enumerableType}/min{fileCounter}.json", serialized);
+                        serialized = JsonConvert.SerializeObject(max);
+                        await File.AppendAllTextAsync($"../{enumerableType}/max{fileCounter}.json", serialized);
+                        serialized = JsonConvert.SerializeObject(any);
+                        await File.AppendAllTextAsync($"../{enumerableType}/any{fileCounter++}.json", serialized);
+                    }
+
                     ClearLists(min, max, any);
                 }
 
