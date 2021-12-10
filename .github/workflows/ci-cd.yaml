@@ -24,7 +24,7 @@ jobs:
         run: dotnet restore Logic
 
       - name: Restore API dependecies
-        run: dotnet restore VisualizerApi
+        run: dotnet restore VisualizerAPI
 
       - name: Build Data
         run: dotnet build Data -c Release --no-restore -o ./bin
@@ -33,4 +33,4 @@ jobs:
         run: dotnet build Logic -c Release --no-restore -o ./bin
 
       - name: Build API
-        run: dotnet build VisualizerApi -c Release --no-restore -o ./bin
+        run: dotnet build VisualizerAPI -c Release --no-restore -o ./bin
