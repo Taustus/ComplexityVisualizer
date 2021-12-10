@@ -17,8 +17,14 @@ jobs:
         with:
           dotnet-version: '6.0.x'
 
-      - name: Restore Dependecies
-        run: dotnet restore
+      - name: Restore Data dependecies
+        run: dotnet restore Data
+
+      - name: Restore Logic dependecies
+        run: dotnet restore Logic
+
+      - name: Restore API dependecies
+        run: dotnet restore VisualizerApi
 
       - name: Build Data
         run: dotnet build Data -c Release --no-restore -o ./bin
