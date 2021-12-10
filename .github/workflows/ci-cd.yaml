@@ -20,5 +20,11 @@ jobs:
       - name: Restore Dependecies
         run: dotnet restore
 
-      - name: Build app
-        run: dotnet build -c Release --no-restore -o ./bin
+      - name: Build Data
+        run: dotnet build Data -c Release --no-restore -o ./bin
+
+      - name: Build Logic
+        run: dotnet build Logic -c Release --no-restore -o ./bin
+
+      - name: Build API
+        run: dotnet build VisualizerApi -c Release --no-restore -o ./bin
