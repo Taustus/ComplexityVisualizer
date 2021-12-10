@@ -5,6 +5,10 @@ using Logic.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.WebHost.UseKestrel()
+               .UseContentRoot(Directory.GetCurrentDirectory())
+               .UseUrls("http://*:5000", "https://*:5001");
+
 
 // Add services to the container.
 var configuration = builder.Configuration;
