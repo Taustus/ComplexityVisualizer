@@ -5,10 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace VisualizerAPI.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class StatisticsController : ControllerBase
     {
-
         private readonly IStatisticsService _statisticsService;
         private readonly ILogger<StatisticsController> _logger;
 
@@ -17,11 +16,14 @@ namespace VisualizerAPI.Controllers
         {
             _statisticsService = statisticsService;
             _logger = logger;
+
+            _logger.LogInformation($"Logger was succesfully initialized at {nameof(StatisticsController)}");
         }
 
-        [HttpGet(Name = "GetMedian")]
+        [HttpGet("GetMedian")]
         public float GetMedian(string enumerableType, string method)
         {
+            _logger.LogInformation("wasd");
             float median = enumerableType switch
             {
                 "List" => _statisticsService.GetMedianByType(EnumerableType.List, method),

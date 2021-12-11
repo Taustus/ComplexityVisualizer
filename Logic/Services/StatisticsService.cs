@@ -92,25 +92,7 @@ namespace Logic
                 // Counts between them are equal
                 if (min.Count > 100)
                 {
-                    if(!debugMode)
-                    {
-                        AddDataToDb(min, max, any);
-                    }
-                    else
-                    {
-                        var serialized = JsonConvert.SerializeObject(min);
-
-                        if($"../{enumerableType}" is var folderPath && !Directory.Exists(folderPath))
-                        {
-                            Directory.CreateDirectory(folderPath);
-                        }
-
-                        await File.AppendAllTextAsync($"../{enumerableType}/min{fileCounter}.json", serialized);
-                        serialized = JsonConvert.SerializeObject(max);
-                        await File.AppendAllTextAsync($"../{enumerableType}/max{fileCounter}.json", serialized);
-                        serialized = JsonConvert.SerializeObject(any);
-                        await File.AppendAllTextAsync($"../{enumerableType}/any{fileCounter++}.json", serialized);
-                    }
+                    AddDataToDb(min, max, any);
 
                     ClearLists(min, max, any);
                 }
