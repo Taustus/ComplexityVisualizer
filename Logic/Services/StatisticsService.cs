@@ -22,6 +22,8 @@ namespace Logic
         protected readonly int _delayInMiliseconds;
         protected readonly bool _debugMode;
 
+        static object _lock;
+
         public StatisticsService(ILogger<StatisticsService> logger,
                                  IServiceScopeFactory ServiceScopeFactory,
                                  IOptions<StatisticsSettings> StatisticsSettings)
@@ -35,6 +37,8 @@ namespace Logic
             _debugMode = StatisticsSettings.Value.DebugMode;
             _delayInMiliseconds = StatisticsSettings.Value.DelayInMilliseconds;
             _timeToWorkInMilliseconds = TimeSpan.FromMilliseconds((long)_processTime);
+
+            _lock = new object();
 
             _logger.LogInformation("StatisticsService start!");
         }
@@ -124,8 +128,11 @@ namespace Logic
             var union = min.Union(max).Union(any);
 
             _logger.LogInformation("Add new data to db!");
-
-            _repository.AddRange(union);
+            
+            lock(_lock)
+            {
+                _repository.AddRange(union);
+            }
         }
 
         private List<StatisticsModel> GetDataFromDb()
