@@ -12,8 +12,9 @@ namespace Logic
 {
     public class StatisticsService : IStatisticsService
     {
+        protected readonly IStatisticsRepository _repository;
         protected readonly IServiceScopeFactory _serviceScopeFactory;
-        protected readonly IStatisticsRepository _statisticsRepository;
+        protected readonly StatisticsRepository _statisticsRepository;
         protected readonly ILogger<StatisticsService> _logger;
         protected readonly ProcessTime _processTime;
         protected readonly CollectionSize _collectionSize;
@@ -23,12 +24,11 @@ namespace Logic
 
         public StatisticsService(ILogger<StatisticsService> logger,
                                  IServiceScopeFactory ServiceScopeFactory,
-                                 IOptions<StatisticsSettings> StatisticsSettings,
-                                 IStatisticsRepository statisticsRepository)
+                                 IOptions<StatisticsSettings> StatisticsSettings)
         {
             _logger = logger;
             _serviceScopeFactory = ServiceScopeFactory;
-            _statisticsRepository = statisticsRepository;
+            _repository = GetRepository();
 
             _processTime = StatisticsSettings.Value.ProcessTime;
             _collectionSize = StatisticsSettings.Value.CollectionSize;
@@ -125,12 +125,12 @@ namespace Logic
 
             _logger.LogInformation("Add new data to db!");
 
-            _statisticsRepository.AddRange(union);
+            _repository.AddRange(union);
         }
 
         private List<StatisticsModel> GetDataFromDb()
         {
-            var dataAsList = _statisticsRepository.GetAll().ToList();
+            var dataAsList = _repository.GetAll().ToList();
 
             return dataAsList;
         }
@@ -140,6 +140,21 @@ namespace Logic
             min.Clear();
             max.Clear();
             any.Clear();
+        }
+
+        private IStatisticsRepository GetRepository()
+        {
+            var scope = _serviceScopeFactory.CreateScope();
+            var repository = scope.ServiceProvider.GetService<IStatisticsRepository>();
+
+            if (repository is not null)
+            {
+                return repository;
+            }
+            else
+            {
+                throw new InvalidOperationException("Couldn't get repository!");
+            }
         }
 
         private static float CalculateMedian(List<StatisticsModel> data, string enumerableTypeAsString)
