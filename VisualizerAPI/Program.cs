@@ -6,10 +6,11 @@ builder.WebHost.UseKestrel()
                .UseContentRoot(Directory.GetCurrentDirectory())
                .UseUrls("http://*:5000", "https://*:5001");
 
+builder.Services.AddLogging();
+
 // Add services to the container.
 var configuration = builder.Configuration;
-var services = builder.Services;
-services.ConfigureStatisticsLogic(configuration);
+builder.Services.ConfigureStatisticsLogic(configuration);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

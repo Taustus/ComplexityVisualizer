@@ -2,6 +2,7 @@
 using Data.Enums;
 using Logic.Contracts;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System.Diagnostics;
@@ -11,16 +12,18 @@ namespace Logic
     public class StatisticsService : IStatisticsService
     {
         protected readonly IServiceScopeFactory _serviceScopeFactory;
-
+        protected readonly ILogger _logger;
         protected readonly ProcessTime _processTime;
         protected readonly CollectionSize _collectionSize;
         protected readonly TimeSpan _timeToWorkInMilliseconds;
         protected readonly int _delayInMiliseconds;
         protected readonly bool _debugMode;
 
-        public StatisticsService(IServiceScopeFactory ServiceScopeFactory,
+        public StatisticsService(ILogger<StatisticsService> logger,
+                                 IServiceScopeFactory ServiceScopeFactory,
                                  IOptions<StatisticsSettings> StatisticsSettings)
         {
+            _logger = logger;
             _serviceScopeFactory = ServiceScopeFactory;
             _processTime = StatisticsSettings.Value.ProcessTime;
             _collectionSize = StatisticsSettings.Value.CollectionSize;
@@ -28,10 +31,10 @@ namespace Logic
             _delayInMiliseconds = StatisticsSettings.Value.DelayInMilliseconds;
             _timeToWorkInMilliseconds = TimeSpan.FromMilliseconds((long)_processTime);
 
-            SetUpTasks();
+            _logger.LogInformation("StatisticsService start!");
         }
 
-        private void SetUpTasks()
+        public void RunTasks()
         {
             Task[] tasks = GenerateTasks();
 
@@ -73,7 +76,6 @@ namespace Logic
             var timeAsTicks = _timeToWorkInMilliseconds.Ticks;
 
             long passedTicks = 0;
-            int fileCounter = 0;
             int delay = _delayInMiliseconds;
             var debugMode = _debugMode;
             var enumerableType = collectionWorker.EnumerableType;

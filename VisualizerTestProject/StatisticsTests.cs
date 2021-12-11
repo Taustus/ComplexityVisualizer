@@ -15,12 +15,12 @@ namespace VisualizerTestProject
         protected readonly IStatisticsService _statisticsService;
         protected readonly IOptions<StatisticsSettings> _statisticsSettings;
 
-
         public StatisticsTests()
         {
             var services = new ServiceCollection();
             var configuration = InitConfiguration();
 
+            services.AddLogging();
             services.ConfigureStatisticsLogic(configuration);
 
             var serviceProvider = services.BuildServiceProvider();
