@@ -13,7 +13,7 @@ namespace VisualizerTestProject
     public class StatisticsTests
     {
         protected readonly IStatisticsService _statisticsService;
-        protected readonly IOptions<StatisticsSettings> _statisticsSettings;
+        protected readonly IOptions<StatisticsSettings> _statisticsSettings; 
 
         public StatisticsTests()
         {
