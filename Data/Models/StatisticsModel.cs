@@ -4,6 +4,9 @@ namespace Data
 {
     public class StatisticsModel
     {
+        [Key]
+        public long Id { get; set; }
+
         public long Ticks { get; protected set; }
 
         [StringLength(3)]
