@@ -7,5 +7,14 @@ namespace Data
         internal virtual DbSet<StatisticsModel> StatisticsModels { get; private set; }
 
         public MySqlContext(DbContextOptions<MySqlContext> options) : base(options) { }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<StatisticsModel>(
+            eb =>
+            {
+                eb.HasNoKey();
+            });
+        }
     }
 }
