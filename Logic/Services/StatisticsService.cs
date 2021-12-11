@@ -1,4 +1,5 @@
 ﻿using Data;
+using Data.Contracts;
 using Data.Enums;
 using Logic.Contracts;
 using Microsoft.Extensions.DependencyInjection;
@@ -137,10 +138,10 @@ namespace Logic
             any.Clear();
         }
 
-        private StatisticsRepository GetRepository()
+        private IStatisticsRepository GetRepository()
         {
             var scope = _serviceScopeFactory.CreateScope();
-            var repository = scope.ServiceProvider.GetService<StatisticsRepository>();
+            var repository = scope.ServiceProvider.GetService<IStatisticsRepository>();
 
             if (repository is not null)
             {

@@ -1,6 +1,6 @@
 ﻿namespace Data.Contracts
 {
-    public interface IStatisticsRepository
+    public interface IStatisticsRepository : IRepositoryBase<StatisticsModel>
     {
 
     }
