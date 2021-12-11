@@ -12,7 +12,7 @@ namespace Logic.Extensions
     {
         public static void ConfigureStatisticsLogic(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<MySqlContext>(options => options.UseMySQL(configuration.GetSection("ConnectionsString")["MySQL"]));
+            services.AddDbContext<MySqlContext>(options => options.UseMySQL(configuration.GetSection("ConnectionStrings")["MySQL"]));
             services.Configure<StatisticsSettings>(configuration.GetSection("StatisticsSettings"));
             services.AddScoped<IStatisticsRepository, StatisticsRepository>();
             services.AddSingleton<IStatisticsService, StatisticsService>();
