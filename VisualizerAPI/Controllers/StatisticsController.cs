@@ -16,14 +16,11 @@ namespace VisualizerAPI.Controllers
         {
             _statisticsService = statisticsService;
             _logger = logger;
-
-            _logger.LogInformation($"Logger was succesfully initialized at {nameof(StatisticsController)}");
         }
 
         [HttpGet("GetMedian")]
         public float GetMedian(string enumerableType, string method)
         {
-            _logger.LogInformation("wasd");
             float median = enumerableType switch
             {
                 "List" => _statisticsService.GetMedianByType(EnumerableType.List, method),

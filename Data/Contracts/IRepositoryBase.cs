@@ -4,6 +4,8 @@
     {
         void AddRange(IEnumerable<T> entities);
 
+        void SaveChanges();
+
         IEnumerable<T> GetAll();
     }
 }

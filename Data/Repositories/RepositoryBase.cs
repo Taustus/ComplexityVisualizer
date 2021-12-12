@@ -15,6 +15,11 @@ namespace Data.Repositories
             RepositoryContext.Set<T>().AddRange(entities);
         }
 
+        public void SaveChanges()
+        {
+            RepositoryContext?.SaveChanges();
+        }
+
         public IEnumerable<T> GetAll() => RepositoryContext.Set<T>().AsNoTracking();
 
         public void Dispose()

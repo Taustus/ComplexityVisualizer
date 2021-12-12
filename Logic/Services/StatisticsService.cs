@@ -14,7 +14,6 @@ namespace Logic
     {
         protected readonly IStatisticsRepository _repository;
         protected readonly IServiceScopeFactory _serviceScopeFactory;
-        protected readonly StatisticsRepository _statisticsRepository;
         protected readonly ILogger<StatisticsService> _logger;
         protected readonly ProcessTime _processTime;
         protected readonly CollectionSize _collectionSize;
@@ -22,7 +21,7 @@ namespace Logic
         protected readonly int _delayInMiliseconds;
         protected readonly bool _debugMode;
 
-        static object _lock;
+        protected readonly static object _lock = new();
 
         public StatisticsService(ILogger<StatisticsService> logger,
                                  IServiceScopeFactory ServiceScopeFactory,
@@ -37,8 +36,6 @@ namespace Logic
             _debugMode = StatisticsSettings.Value.DebugMode;
             _delayInMiliseconds = StatisticsSettings.Value.DelayInMilliseconds;
             _timeToWorkInMilliseconds = TimeSpan.FromMilliseconds((long)_processTime);
-
-            _lock = new object();
 
             _logger.LogInformation("StatisticsService start!");
         }
@@ -132,6 +129,8 @@ namespace Logic
             lock(_lock)
             {
                 _repository.AddRange(union);
+
+                _repository.SaveChanges();
             }
         }
 
