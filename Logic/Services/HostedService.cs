@@ -28,7 +28,7 @@ namespace Logic.Services
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            _statisticsService.RunTasks();
+            //_statisticsService.RunTasks();
 
             return Task.CompletedTask;
         }

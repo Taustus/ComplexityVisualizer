@@ -2,8 +2,6 @@
 
 namespace Logic
 {
-    
-
     public class CollectionWorker<T>
     {
         public IEnumerable<T> Collection { get; protected set; }

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Data
 {
-    [Table("StatisticsModel")]
+    [Table("Statistics")]
     public class StatisticsModel
     {
         [Key]
